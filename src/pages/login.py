@@ -23,7 +23,8 @@ def show_login_dialog():
     if result:
         if result.get("success"):
             user = login(result['username'])
-            local_storage_manager.save_user(user)
+            with st.spinner():
+                local_storage_manager.save_user(user)
             st.rerun()
         else:
             st.error(result.get("error", "Hive Keychain failed or was denied."))

@@ -26,8 +26,6 @@ logging.basicConfig(
 
 st.set_page_config(page_title="My App", layout="wide")
 
-
-
 st.title("Scholar Showcase demo")
 
 # Always show main content
