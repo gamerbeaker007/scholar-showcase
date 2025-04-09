@@ -1,0 +1,5 @@
+[[pages]]
+path = 'src/pages/resource_metrics_page.py'
+name = 'Resource Metrics'
+icon = ':coin:'
+
