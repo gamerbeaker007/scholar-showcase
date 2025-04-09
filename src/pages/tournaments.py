@@ -16,7 +16,6 @@ def get_page():
 
     all_players = pd.DataFrame()
     for index, row in bronze_rows.iterrows():
-        print(row['id'])
         players = spl.get_tournament(row['id'])
         all_players = pd.concat([all_players, players])
 

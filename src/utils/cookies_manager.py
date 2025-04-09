@@ -3,35 +3,23 @@ import json
 from streamlit_cookies_manager import EncryptedCookieManager
 from src.models.models import User
 
-cookie_password = st.secrets["cookies"]["password"]
-
-# Global reference to the cookie manager
-cookies = None
-
-
-def init_cookies_manager():
-    global cookies
-    cookies = EncryptedCookieManager(
-        prefix="scholar-showcase/",
-        password=cookie_password
-    )
-    return cookies
-
+def get_cookies():
+    if "cookies" not in st.session_state:
+        cookie_password = st.secrets["cookies"]["password"]
+        st.session_state.cookies = EncryptedCookieManager(
+            prefix="scholar-showcase/",
+            password=cookie_password
+        )
+    return st.session_state.cookies
 
 def save_cookie_user(user: User):
-    if cookies is None:
-        init_cookies_manager()
-
+    cookies = get_cookies()
     if cookies.ready():
-        user_json = json.dumps(user.to_dict())
-        cookies['user'] = user_json
+        cookies['user'] = json.dumps(user.to_dict())
         cookies.save()
 
-
 def get_cookie_user() -> User | None:
-    if cookies is None:
-        init_cookies_manager()
-
+    cookies = get_cookies()
     if not cookies.ready():
         return None
 
@@ -45,11 +33,8 @@ def get_cookie_user() -> User | None:
         st.error(f"Failed to parse user from cookie: {e}")
         return None
 
-
 def del_cookie_user():
-    if cookies is None:
-        init_cookies_manager()
-
+    cookies = get_cookies()
     if cookies.ready():
         cookies['user'] = ""
         cookies.save()

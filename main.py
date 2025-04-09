@@ -23,12 +23,10 @@ with st.container(border=True):
     with col_settings:
         if user:
             if st.button("⚙️", key="settings_btn", help="Settings"):
-                print("SS")
                 settings.show_settings_dialog(user)
     with col_logout:
         if user:
             if st.button("🚪 Logout", key="logout_btn", help="Logout"):
-                print("LL")
                 login.logout()
         else:
             if st.button("Login", key="login_btn", help="Login with Hive Keychain"):
