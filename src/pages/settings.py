@@ -4,7 +4,7 @@ import streamlit as st
 
 from src.api import db_actions
 from src.models.models import User, RoleEnum
-from src.utils import notifications, cookies_manager
+from src.utils import notifications, local_storage_manager
 
 
 def is_valid_email(email: str) -> bool:
@@ -53,7 +53,7 @@ def show_settings_dialog(user: User):
                 user.discord_enabled = False
             notifications.set_start_up_message("Settings saved.")
             update_use = db_actions.update_user(user)
-            cookies_manager.save_cookie_user(update_use)
+            local_storage_manager.save_user(update_use)
             st.rerun()
 
     with col_cancel:

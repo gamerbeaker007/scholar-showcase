@@ -1,10 +1,32 @@
+import importlib
+import logging
+import sys
+
 import streamlit as st
+
+from src.pages import login, settings, tournaments, managers, scholars
+from src.utils import notifications
+
+
+def reload_all():
+    """Reload all imported modules. workaround for streamlit to load also changed modules"""
+    for module_name in list(sys.modules.keys()):
+        # Reload only modules that are not built-in and not part of the standard library
+        if module_name.startswith("src"):
+            importlib.reload(sys.modules[module_name])
+
+
+reload_all()
+
+logging.basicConfig(
+    level=logging.INFO,  # Set the logging level
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # Log format
+    datefmt="%Y-%m-%d %H:%M:%S",  # Date format
+)
 
 st.set_page_config(page_title="My App", layout="wide")
 
 
-from src.pages import login, settings, tournaments, managers, scholars  # noqa: E402
-from src.utils import notifications  # noqa: E402
 
 st.title("Scholar Showcase demo")
 

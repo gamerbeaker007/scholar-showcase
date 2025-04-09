@@ -1,3 +1,5 @@
+import logging
+
 import pandas as pd
 import streamlit as st
 
@@ -5,32 +7,42 @@ from src.api import spl
 
 tournament_name = 'Scarred Hand Bronze Cup'
 
+log = logging.getLogger("Tournaments")
+
+
+@st.cache_data(ttl="1h")
+def get_aggregated_players(tournament_ids: list[str]):
+    all_players = pd.DataFrame()
+
+    for _id in tournament_ids:
+        log.info(f"Processing tournament ID: {_id}")
+        players = spl.get_tournament(_id)  # 🚨 not spl.get_tournament
+        all_players = pd.concat([all_players, players], ignore_index=True)
+
+    if all_players.empty:
+        return all_players
+
+    grouped = all_players.groupby('player').agg({
+        'wins': 'sum',
+        'losses': 'sum',
+        'finish': lambda x: list(x),
+    }).reset_index()
+    grouped['tournaments_played'] = grouped['finish'].apply(len)
+    return grouped[['player', 'tournaments_played', 'wins', 'losses', 'finish']]
+
 
 def get_page():
     st.title("Tournament Overview")
     df = spl.get_complete_tournaments()
-    # st.dataframe(df)
+
     bronze_rows = df[df['name'].str.startswith(tournament_name)]
-    # st.write(bronze_rows.index.size)
-    # st.dataframe(bronze_rows)
 
-    all_players = pd.DataFrame()
-    for index, row in bronze_rows.iterrows():
-        players = spl.get_tournament(row['id'])
-        all_players = pd.concat([all_players, players])
+    if bronze_rows.empty:
+        st.warning(f'No tournaments found with name {tournament_name}')
+        return
 
-    # st.dataframe(all_players)
-    grouped = all_players.groupby('player').agg({
-        'wins': 'sum',
-        'losses': 'sum',
-        'finish': lambda x: list(x),  # Collect all end_place values into a list
-    }).reset_index()
-
-    # Add a new column to count how many tournaments each player played (length of the end_place list)
-    grouped['tournaments_played'] = grouped['finish'].apply(len)
-
-    # Optional: move columns around if you want 'tournaments_played' earlier
-    grouped = grouped[['player', 'tournaments_played', 'wins', 'losses', 'finish']]
+    tournament_ids = bronze_rows['id'].tolist()
+    grouped = get_aggregated_players(tournament_ids)
 
     st.write(f"Scanned tournaments with title {tournament_name}")
     st.write(f"Found tournaments: {bronze_rows.index.size}")

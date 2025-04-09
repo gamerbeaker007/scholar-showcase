@@ -90,13 +90,11 @@ def get_nested_value(response_dict: dict, key_path: str) -> Any:
 
 @st.cache_data(ttl="1h")
 def get_complete_tournaments():
+    log.info("Get SPL tournaments")
     result = fetch_api_data(f'{API_URLS['base']}tournaments/completed', data_key='data')
     if result:
         return pd.DataFrame(result)
     return pd.DataFrame()
-
-
-st.cache_data(ttl="24h")
 
 
 def get_tournament(_id):
