@@ -1,16 +1,16 @@
 import streamlit as st
 
-from src.pages import login, settings, tournaments, managers, scholars
-from src.utils import notifications, cookies_manager
-
 st.set_page_config(page_title="My App", layout="wide")
+
+
+from src.pages import login, settings, tournaments, managers, scholars  # noqa: E402
+from src.utils import notifications  # noqa: E402
 
 st.title("Scholar Showcase demo")
 
 # Always show main content
 with st.container(border=True):
     st.title("Main")
-    cookies_manager.init_cookies_manager()
 
     st.write("Welcome to the main page!")
     notifications.show_start_up_message()
@@ -23,10 +23,12 @@ with st.container(border=True):
     with col_settings:
         if user:
             if st.button("⚙️", key="settings_btn", help="Settings"):
+                print("SS")
                 settings.show_settings_dialog(user)
     with col_logout:
         if user:
             if st.button("🚪 Logout", key="logout_btn", help="Logout"):
+                print("LL")
                 login.logout()
         else:
             if st.button("Login", key="login_btn", help="Login with Hive Keychain"):
