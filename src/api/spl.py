@@ -104,9 +104,13 @@ def get_tournament(_id):
     return pd.DataFrame()
 
 
-def get_leaderboard_with_player(player):
-    params = {'username': player}
+def get_leaderboard_with_player(player, format_type):
+    params = {
+        'username': player,
+        'format': format_type,
+    }
+
     result = fetch_api_data(f'{API_URLS['base']}players/leaderboard_with_player', params=params, data_key='player')
-    if result:
+    if result and len(result) > 1:
         return pd.DataFrame(result, index=[0])
     return pd.DataFrame()

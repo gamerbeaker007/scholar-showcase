@@ -1,4 +1,4 @@
-from src.icons import discord_icon_url, email_icon_url
+from src.utils.icons import discord_icon_url, email_icon_url
 
 # CSS Styles for Contact Info Card
 contact_info_styles = """
