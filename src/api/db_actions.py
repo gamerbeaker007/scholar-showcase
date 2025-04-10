@@ -49,7 +49,6 @@ def users_to_df(users) -> pd.DataFrame:
             "email_enabled": user.email_enabled,
         } for user in users])
     else:
-        print("empty")
         return pd.DataFrame(columns=[
             "account",
             "role",
