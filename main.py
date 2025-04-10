@@ -4,7 +4,7 @@ import sys
 
 import streamlit as st
 
-from src.pages import login, settings, tournaments, managers, scholars
+from src.pages import login, settings, managers, scholars, tournaments
 from src.utils import notifications
 
 

@@ -3,7 +3,10 @@ import logging
 import pandas as pd
 import streamlit as st
 
-from src.api import spl
+from src.api import spl, db_actions
+from src.pages.tournaments_components.battle_info_card import get_battle_info_card
+from src.pages.tournaments_components.contact_info_card import get_contact_info_card
+from src.pages.tournaments_components.player_info_card import get_player_info_card
 
 tournament_name = 'Scarred Hand Bronze Cup'
 
@@ -31,6 +34,28 @@ def get_aggregated_players(tournament_ids: list[str]):
     return grouped[['player', 'tournaments_played', 'wins', 'losses', 'finish']]
 
 
+def make_formatted_table(df):
+    st.markdown(f"## Participants of tournament {tournament_name}")
+    row_colors = ["#111", "#222"]
+
+    for idx, (_, row) in enumerate(df.iterrows()):
+        bg_color = row_colors[idx % 2]
+
+        player_info_card = get_player_info_card(row)
+        battle_info_card = get_battle_info_card(row)
+        contact_info_card = get_contact_info_card(row)
+
+        st.markdown(f"""
+<div style='background-color:{bg_color}; padding: 15px; border-radius: 10px; margin-bottom: 15px;'>
+    <div style='display: flex; justify-content: space-between;'>
+        {player_info_card}
+        {battle_info_card}
+        {contact_info_card}
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
 def get_page():
     st.title("Tournament Overview")
     df = spl.get_complete_tournaments()
@@ -44,9 +69,23 @@ def get_page():
     tournament_ids = bronze_rows['id'].tolist()
     grouped = get_aggregated_players(tournament_ids)
 
+    scholars = db_actions.get_all_scholars()
+    scholars = scholars.rename(columns={"account": "player"})
+
+    merged_df = pd.merge(
+        grouped,
+        scholars,
+        how='left',
+        on=['player']
+    )
+
+    merged_df = merged_df.sort_values(by='wins', ascending=False)
+
+    make_formatted_table(merged_df)
+
     st.write(f"Scanned tournaments with title {tournament_name}")
     st.write(f"Found tournaments: {bronze_rows.index.size}")
     st.write("This are the are the players and how many wins and losses and their finishes")
     cols = st.columns([2, 1])
     with cols[0]:
-        st.dataframe(grouped, use_container_width=100)
+        st.dataframe(merged_df, use_container_width=100)
