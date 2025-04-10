@@ -13,7 +13,7 @@ battle_info_styles = """
     background: url(https://img.icons8.com/ios-filled/100/crossed-swords.png) no-repeat left center;
     background-size: 40px;
     color: white;
-    font-size: 14px;
+    font-size: 16px;
 }
 .battle-card-content {
     display: flex;
@@ -51,8 +51,9 @@ def format_finish_counts(places):
 
 def get_battle_info_card(row):
     counts = format_finish_counts(row["finish"])
-    total_tournaments = row["wins"] + row["losses"]
-    winrate = round(row["wins"] / total_tournaments * 100) if (row["wins"] + row["losses"]) > 0 else 0
+    tournaments_played = len(row["finish"])
+    battles = row["wins"] + row["losses"]
+    winrate = round(row["wins"] / battles * 100) if battles > 0 else 0
 
     return f"""{battle_info_styles}<div class='battle-card' title='Wins: {row["wins"]}, Losses: {row["losses"]}'>
         <div class='battle-card-content'>
@@ -67,7 +68,8 @@ def get_battle_info_card(row):
                 <span>➕ {counts["over10"]}x</span>
             </div>
             <div class='battle-col'>
-                <span># {total_tournaments} tournaments played</span>
+                <span># {tournaments_played} tournaments played</span>
+                <span># {battles} amount of battles</span>
             </div>
         </div>
     </div>"""
