@@ -6,6 +6,7 @@ player_info_styles = """
     flex: 1;
     position: relative;
     min-height: 60px;
+    min-width: 150px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -32,9 +33,9 @@ player_info_styles = """
 }
 
 .player-card img {
-    height: 40px;
+    height: 30px;
     opacity: 0.8;
-    margin-right: 12px;
+    margin-right: 5px;
 }
 
 .player-card span {
@@ -48,7 +49,7 @@ player_info_styles = """
 
 
 def get_player_info_card(row):
-    return f"""{player_info_styles}<div class='player-card'>
+    return f"""<div class='player-card'>
             <a href='inspect?player={row["player"]}' target='_self' class='player-card-link'>
                 <img src='{player_icon_url}' alt='player icon' />
                 <span>{row["player"]}</span>

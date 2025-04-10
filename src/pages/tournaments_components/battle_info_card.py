@@ -5,11 +5,12 @@ battle_info_styles = """
     flex: 2;
     position: relative;
     min-height: 60px;
+    min-width: 500px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: transparent;
-    padding-left: 60px;
+    padding-left: 1rem;
     background: url(https://img.icons8.com/ios-filled/100/crossed-swords.png) no-repeat left center;
     background-size: 40px;
     color: white;
@@ -55,7 +56,7 @@ def get_battle_info_card(row):
     tournaments_played = row['tournaments']
     winrate = row['win rate']
 
-    return f"""{battle_info_styles}<div class='battle-card' title='Wins: {row["wins"]}, Losses: {row["losses"]}'>
+    return f"""<div class='battle-card' title='Wins: {row["wins"]}, Losses: {row["losses"]}'>
         <div class='battle-card-content'>
             <div class='battle-col'>⚔️ {winrate}%</div>
             <div class='battle-col'>

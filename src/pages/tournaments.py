@@ -5,13 +5,28 @@ import streamlit as st
 
 from src.api import spl, db_actions
 from src.pages.tournaments_components import filter_section
-from src.pages.tournaments_components.battle_info_card import get_battle_info_card
-from src.pages.tournaments_components.contact_info_card import get_contact_info_card
-from src.pages.tournaments_components.player_info_card import get_player_info_card
+from src.pages.tournaments_components.battle_info_card import get_battle_info_card, battle_info_styles
+from src.pages.tournaments_components.contact_info_card import get_contact_info_card, contact_info_styles
+from src.pages.tournaments_components.player_info_card import get_player_info_card, player_info_styles
 
 tournament_name = 'Scarred Hand Bronze Cup'
 
 log = logging.getLogger("Tournaments")
+
+container_style = """<style>
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    @media screen and (max-width: 768px) {
+        .flex-container {
+            flex-direction: column;
+        }
+    }
+    </style>"""
 
 
 @st.cache_data(ttl="1h")
@@ -39,6 +54,12 @@ def add_player_overview(df):
     st.markdown(f"## Participants of tournament {tournament_name}")
     row_colors = ["#111", "#222"]
 
+    # Add styles once
+    st.markdown(f'{container_style}'
+                f'{player_info_styles}'
+                f'{battle_info_styles}'
+                f'{contact_info_styles}', unsafe_allow_html=True)
+
     for idx, (_, row) in enumerate(df.iterrows()):
         bg_color = row_colors[idx % 2]
 
@@ -47,14 +68,14 @@ def add_player_overview(df):
         contact_info_card = get_contact_info_card(row)
 
         st.markdown(f"""
-<div style='background-color:{bg_color}; padding: 15px; border-radius: 10px; margin-bottom: 15px;'>
-    <div style='display: flex; justify-content: space-between;'>
-        {player_info_card}
-        {battle_info_card}
-        {contact_info_card}
-    </div>
-</div>
-""", unsafe_allow_html=True)
+        <div style='background-color:{bg_color}; padding: 15px; border-radius: 10px; margin-bottom: 15px;'>
+            <div class='flex-container'>
+                {player_info_card}
+                {battle_info_card}
+                {contact_info_card}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 
 def merge_data_with_scholars(grouped):

@@ -8,13 +8,14 @@ contact_info_styles = """
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 10px;
+    margin-left: 1rem;
+    padding-left: 1rem;
     color: white;
 }
 .contact-item {
     display: flex;
     align-items: center;
-    margin-bottom: 6px;
+    margin-bottom: 1rem;
 }
 .contact-item img {
     height: 20px;
@@ -30,7 +31,7 @@ contact_info_styles = """
 
 def get_contact_info_card(row):
     if row["role"] != "Scholar":
-        return f"""{contact_info_styles}<div class='contact-card'>
+        return """<div class='contact-card'>
             <div class='contact-item'>No contact info</div>
         </div>"""
 
