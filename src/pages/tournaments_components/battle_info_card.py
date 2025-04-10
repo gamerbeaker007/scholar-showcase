@@ -51,9 +51,9 @@ def format_finish_counts(places):
 
 def get_battle_info_card(row):
     counts = format_finish_counts(row["finish"])
-    tournaments_played = len(row["finish"])
-    battles = row["wins"] + row["losses"]
-    winrate = round(row["wins"] / battles * 100) if battles > 0 else 0
+    battles = row['battles']
+    tournaments_played = row['tournaments']
+    winrate = row['win rate']
 
     return f"""{battle_info_styles}<div class='battle-card' title='Wins: {row["wins"]}, Losses: {row["losses"]}'>
         <div class='battle-card-content'>

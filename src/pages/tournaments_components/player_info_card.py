@@ -38,7 +38,7 @@ player_info_styles = """
 
 def get_player_info_card(row):
     return f"""{player_info_styles}<div class='player-card'>
-            <a href='?inspec={row["player"]}' class='player-card-link'>
+            <a href='inspect?player={row["player"]}' class='player-card-link'>
                 <img src='{player_icon_url}' alt='player icon' />
                 <span>{row["player"]}</span>
             </a>

@@ -4,6 +4,7 @@ import pandas as pd
 import streamlit as st
 
 from src.api import spl, db_actions
+from src.pages.tournaments_components import filter_section
 from src.pages.tournaments_components.battle_info_card import get_battle_info_card
 from src.pages.tournaments_components.contact_info_card import get_contact_info_card
 from src.pages.tournaments_components.player_info_card import get_player_info_card
@@ -34,7 +35,7 @@ def get_aggregated_players(tournament_ids: list[str]):
     return grouped[['player', 'tournaments_played', 'wins', 'losses', 'finish']]
 
 
-def make_formatted_table(df):
+def add_player_overview(df):
     st.markdown(f"## Participants of tournament {tournament_name}")
     row_colors = ["#111", "#222"]
 
@@ -56,10 +57,27 @@ def make_formatted_table(df):
 """, unsafe_allow_html=True)
 
 
+def merge_data_with_scholars(grouped):
+    scholars = db_actions.get_all_scholars()
+    scholars = scholars.rename(columns={"account": "player"})
+    merged_df = pd.merge(
+        grouped,
+        scholars,
+        how='left',
+        on=['player']
+    )
+    merged_df = merged_df.sort_values(by='wins', ascending=False)
+    return merged_df
+
+
+def calculate_win_rate(row):
+    battles = row["wins"] + row["losses"]
+    return round(row["wins"] / battles * 100) if battles > 0 else 0
+
+
 def get_page():
     st.title("Tournament Overview")
     df = spl.get_complete_tournaments()
-
     bronze_rows = df[df['name'].str.startswith(tournament_name)]
 
     if bronze_rows.empty:
@@ -68,24 +86,22 @@ def get_page():
 
     tournament_ids = bronze_rows['id'].tolist()
     grouped = get_aggregated_players(tournament_ids)
+    grouped['tournaments'] = grouped['finish'].apply(len)
+    grouped['battles'] = grouped["wins"] + grouped["losses"]
+    grouped['win rate'] = grouped.apply(calculate_win_rate, axis=1)
 
-    scholars = db_actions.get_all_scholars()
-    scholars = scholars.rename(columns={"account": "player"})
-
-    merged_df = pd.merge(
-        grouped,
-        scholars,
-        how='left',
-        on=['player']
-    )
-
-    merged_df = merged_df.sort_values(by='wins', ascending=False)
-
-    make_formatted_table(merged_df)
+    merged_df = merge_data_with_scholars(grouped)
 
     st.write(f"Scanned tournaments with title {tournament_name}")
     st.write(f"Found tournaments: {bronze_rows.index.size}")
     st.write("This are the are the players and how many wins and losses and their finishes")
-    cols = st.columns([2, 1])
-    with cols[0]:
-        st.dataframe(merged_df, use_container_width=100)
+
+    content_col, filters = st.columns([3, 1], gap='large')
+    with filters:
+        merged_df = filter_section.get_page(merged_df)
+    with content_col:
+        add_player_overview(merged_df)
+
+    # cols = st.columns([2, 1])
+    # with cols[0]:
+    #     st.dataframe(merged_df, use_container_width=100)

@@ -3,9 +3,10 @@ import logging
 import sys
 
 import streamlit as st
+from st_pages import get_nav_from_toml
 
-from src.pages import login, settings, managers, scholars, tournaments
-from src.utils import notifications
+from src.pages import tournaments, inspect, registered
+from src.pages.components.login_section import login_section
 
 
 def reload_all():
@@ -24,36 +25,23 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",  # Date format
 )
 
-st.set_page_config(page_title="My App", layout="wide")
+st.set_page_config(page_title="Scholar Showcase demo", layout="wide")
+nav = get_nav_from_toml('.streamlit/pages.toml')
+pg = st.navigation(nav)
+
 
 st.title("Scholar Showcase demo")
 
-# Always show main content
-with st.container(border=True):
-    st.title("Main")
+# Add login to sidebar
+login_section()
 
-    st.write("Welcome to the main page!")
-    notifications.show_start_up_message()
-
-    _, col_user, col_settings, col_logout = st.columns([10, 2, 1, 2])
-    user = login.get_user()
-    with col_user:
-        if user:
-            st.write(f"👋 {user.account}")
-    with col_settings:
-        if user:
-            if st.button("⚙️", key="settings_btn", help="Settings"):
-                settings.show_settings_dialog(user)
-    with col_logout:
-        if user:
-            if st.button("🚪 Logout", key="logout_btn", help="Logout"):
-                login.logout()
-        else:
-            if st.button("Login", key="login_btn", help="Login with Hive Keychain"):
-                login.show_login_dialog()
-
-    tournaments.get_page()
-
-    managers.get_page()
-
-    scholars.get_page()
+placeholder = st.empty()
+# Dynamically call the page-specific function based on the selected page
+if pg.title == "Tournaments":
+    with placeholder.container():
+        tournaments.get_page()
+if pg.title == "Inspect":
+    with placeholder.container():
+        inspect.get_page()
+if pg.title == "Registered":
+    registered.get_page()

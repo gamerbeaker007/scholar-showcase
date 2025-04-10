@@ -1,13 +1,12 @@
 import logging
-import streamlit as st
 from typing import Dict, Any, Optional
 
 import pandas as pd
 import requests
+import streamlit as st
 from requests.adapters import HTTPAdapter
 
 from src.api.logRetry import LogRetry
-
 
 # API URLs
 API_URLS = {
@@ -102,4 +101,12 @@ def get_tournament(_id):
     result = fetch_api_data(f'{API_URLS['base']}tournaments/find', params=params, data_key='players')
     if result:
         return pd.DataFrame(result)
+    return pd.DataFrame()
+
+
+def get_leaderboard_with_player(player):
+    params = {'username': player}
+    result = fetch_api_data(f'{API_URLS['base']}players/leaderboard_with_player', params=params, data_key='player')
+    if result:
+        return pd.DataFrame(result, index=[0])
     return pd.DataFrame()
