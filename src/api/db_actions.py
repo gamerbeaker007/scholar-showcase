@@ -21,9 +21,7 @@ def create_user(username: str) -> User:
         account=username,
         role=RoleEnum.Undefined,
         discord_reference=None,
-        discord_enabled=False,
         email=None,
-        email_enabled=False
     )
     db.add(new_user)
     db.commit()
@@ -44,18 +42,14 @@ def users_to_df(users) -> pd.DataFrame:
             "account": user.account,
             "role": user.role.value,
             "discord_reference": user.discord_reference,
-            "discord_enabled": user.discord_enabled,
             "email": user.email,
-            "email_enabled": user.email_enabled,
         } for user in users])
     else:
         return pd.DataFrame(columns=[
             "account",
             "role",
             "discord_reference",
-            "discord_enabled",
-            "email",
-            "email_enabled"]
+            "email"]
         )
 
 

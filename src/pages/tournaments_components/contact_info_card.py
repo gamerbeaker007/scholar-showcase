@@ -44,7 +44,7 @@ def get_contact_info_card(row):
             <span>{row["discord_reference"]}</span>
         </div>"""
 
-    if row.get("email_enabled") and row.get("email"):
+    if row.get("email"):
         email_html = f"""<div class='contact-item contact-email'>
             <img src='{email_icon_url}' alt='email' />
             <a href='mailto:{row["email"]}'>Email</a>
