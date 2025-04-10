@@ -39,14 +39,25 @@ def update_user(user: User) -> User:
 
 
 def users_to_df(users) -> pd.DataFrame:
-    return pd.DataFrame([{
-        "account": user.account,
-        "role": user.role.value,
-        "discord_reference": user.discord_reference,
-        "discord_enabled": user.discord_enabled,
-        "email": user.email,
-        "email_enabled": user.email_enabled,
-    } for user in users])
+    if users:
+        return pd.DataFrame([{
+            "account": user.account,
+            "role": user.role.value,
+            "discord_reference": user.discord_reference,
+            "discord_enabled": user.discord_enabled,
+            "email": user.email,
+            "email_enabled": user.email_enabled,
+        } for user in users])
+    else:
+        print("empty")
+        return pd.DataFrame(columns=[
+            "account",
+            "role",
+            "discord_reference",
+            "discord_enabled",
+            "email",
+            "email_enabled"]
+        )
 
 
 def get_all_managers():
