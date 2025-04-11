@@ -9,7 +9,13 @@ from src.pages.tournaments_components.battle_info_card import get_battle_info_ca
 from src.pages.tournaments_components.contact_info_card import get_contact_info_card, contact_info_styles
 from src.pages.tournaments_components.player_info_card import get_player_info_card, player_info_styles
 
-tournament_name = 'Scarred Hand Bronze Cup'
+tournament_names = [
+    'Scarred Hand Novice Cup',
+    'Scarred Hand Bronze Cup',
+    'Scarred Hand Silver Cup',
+    'Scarred Hand Gold Cup',
+    'Scarred Hand Diamond Cup'
+]
 
 log = logging.getLogger("Tournaments")
 
@@ -50,9 +56,10 @@ def get_aggregated_players(tournament_ids: list[str]):
     return grouped[['player', 'tournaments_played', 'wins', 'losses', 'finish']]
 
 
-def add_player_overview(df):
-    st.markdown(f"## Participants of tournament {tournament_name}")
+def add_player_overview(df, tournament_name):
     row_colors = ["#111", "#222"]
+
+    st.markdown(f"## Participants of tournament {tournament_name}")
 
     # Add styles once
     st.markdown(f'{container_style}'
@@ -98,31 +105,28 @@ def calculate_win_rate(row):
 
 def get_page():
     st.title("Tournament Overview")
-    df = spl.get_complete_tournaments()
-    bronze_rows = df[df['name'].str.startswith(tournament_name)]
+    tournament_name = st.selectbox("Select tournament:", options=tournament_names)
+    if tournament_name:
+        with st.spinner("Loading data..."):
+            df = spl.get_complete_tournaments()
+            matching_tournaments = df[df['name'].str.startswith(tournament_name)]
 
-    if bronze_rows.empty:
-        st.warning(f'No tournaments found with name {tournament_name}')
-        return
+            if matching_tournaments.empty:
+                st.warning(f'No tournaments found with name {tournament_name}')
+                return
 
-    tournament_ids = bronze_rows['id'].tolist()
-    grouped = get_aggregated_players(tournament_ids)
-    grouped['tournaments'] = grouped['finish'].apply(len)
-    grouped['battles'] = grouped["wins"] + grouped["losses"]
-    grouped['win rate'] = grouped.apply(calculate_win_rate, axis=1)
+            tournament_ids = matching_tournaments['id'].tolist()
+            grouped = get_aggregated_players(tournament_ids)
+            grouped['tournaments'] = grouped['finish'].apply(len)
+            grouped['battles'] = grouped["wins"] + grouped["losses"]
+            grouped['win rate'] = grouped.apply(calculate_win_rate, axis=1)
 
-    merged_df = merge_data_with_scholars(grouped)
+            merged_df = merge_data_with_scholars(grouped)
 
-    st.write(f"Scanned tournaments with title {tournament_name}")
-    st.write(f"Found tournaments: {bronze_rows.index.size}")
-    st.write("This are the are the players and how many wins and losses and their finishes")
+            st.write(f"Found tournaments: {matching_tournaments.index.size}")
 
-    content_col, filters = st.columns([3, 1], gap='large')
-    with filters:
-        merged_df = filter_section.get_page(merged_df)
-    with content_col:
-        add_player_overview(merged_df)
-
-    # cols = st.columns([2, 1])
-    # with cols[0]:
-    #     st.dataframe(merged_df, use_container_width=100)
+            content_col, filters = st.columns([3, 1], gap='large')
+            with filters:
+                merged_df = filter_section.get_page(merged_df)
+            with content_col:
+                add_player_overview(merged_df, tournament_name)
