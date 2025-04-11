@@ -30,7 +30,7 @@ def get_page():
                 guild_name = wild_df.guild_name.iloc[0]
             if not survival_df.empty:
                 league_data.append(("survival", survival_df))
-                guild_name = wild_df.guild_name.iloc[0]
+                guild_name = survival_df.guild_name.iloc[0]
 
             # Show cards in left-to-right order using columns
             st.markdown(league_info_style, unsafe_allow_html=True)
@@ -42,5 +42,7 @@ def get_page():
 
             if guild_name:
                 st.subheader(f"Member of guild: {guild_name}")
+            else:
+                st.subheader("No member of a guild")
 
             st.subheader("More specific stats.....")
