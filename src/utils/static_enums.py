@@ -1,2 +1,19 @@
 
-league_ratings = [0, 400, 700, 1000, 1300, 1600, 1900, 2200, 2500, 2800, 3100, 3400, 3700, 4200, 4700, 5100]
+LEAGUE_MAPPING = {
+    0: "Novice",
+    1: "Bronze III",
+    2: "Bronze II",
+    3: "Bronze I",
+    4: "Silver III",
+    5: "Silver II",
+    6: "Silver I",
+    7: "Gold III",
+    8: "Gold II",
+    9: "Gold I",
+    10: "Diamond III",
+    11: "Diamond II",
+    12: "Diamond I",
+    13: "Champion III",
+    14: "Champion II",
+    15: "Champion I",
+}
