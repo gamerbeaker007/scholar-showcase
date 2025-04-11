@@ -3,15 +3,8 @@ import re
 import streamlit as st
 
 from src.api import db_actions
-from src.models.models import User, RoleEnum
+from src.models.models import User, RoleEnum, RewardSplitEnum, PreferredModesEnum
 from src.utils import notifications, local_storage_manager
-
-
-def is_valid_email(email: str) -> bool:
-    if email:
-        return re.match(r"[^@]+@[^@]+\.[^@]+", email) is not None
-
-    return True
 
 
 def is_valid_discord(discord: str) -> bool:
@@ -41,7 +34,6 @@ def is_valid_discord(discord: str) -> bool:
 
 @st.dialog("User Settings")
 def show_settings_dialog(user: User):
-
     if not user:
         st.warning("You must be logged in to access settings.")
         return
@@ -52,36 +44,61 @@ def show_settings_dialog(user: User):
     current_index = role_options.index(user.role)
     role = st.selectbox("Role", options=RoleEnum, index=current_index)
 
-    email = st.text_input("Email*", value=user.email)
-    discord = st.text_input("Discord*", value=user.discord_reference)
+    preferred_mode = None
+    reward_split = None
 
-    valid_email = is_valid_email(email)
-    if email and not valid_email:
-        st.error("Please enter a valid email address.")
+    # Scholar-specific fields
+    if role == RoleEnum.Scholar:
+        with st.container(border=True):
+            preferred_options = list(PreferredModesEnum)
+            current_index = preferred_options.index(user.preferred_mode) if user.preferred_mode else 0
+            preferred_mode = st.selectbox(
+                "Preferred Mode",
+                options=PreferredModesEnum,
+                index=current_index
+            )
+
+            reward_split_options = list(RewardSplitEnum)
+            current_index = reward_split_options.index(user.reward_split) if user.reward_split else 0
+            reward_split = st.selectbox(
+                "Reward Split (Manager/Scholar)",
+                options=RewardSplitEnum,
+                index=current_index
+            )
+
+    discord = st.text_input("Discord", value=user.discord_reference or "")
 
     valid_discord = is_valid_discord(discord)
     if discord and not valid_discord:
         st.error("Please enter a valid discord name.")
 
-    st.write("\\* By entering these fields you consent that a others can see you email or"
-             " discord username to be used to contact you")
+    st.write("By entering these fields you consent that others can see your Discord username to contact you.")
 
-    save_disabled = (not valid_email or not valid_discord)
     col_save, col_cancel = st.columns(2)
     with col_save:
-        if st.button("💾 Save", key="save_settings_btn", disabled=save_disabled):
-            if is_valid_discord(discord) and is_valid_email(email):
+        if st.button("💾 Save", key="save_settings_btn", disabled=not valid_discord):
+            if is_valid_discord(discord):
                 user.role = role
-                if email:
-                    user.email = email
-                if discord:
-                    user.discord_reference = discord.lower()
+                user.discord_reference = discord.lower() if discord else None
+
+                if role == RoleEnum.Scholar:
+                    # Ensure Scholar always sets these fields
+                    if not preferred_mode or not reward_split:
+                        st.error("Preferred Mode and Reward Split are required for Scholars.")
+                        return
+                    user.preferred_mode = preferred_mode
+                    user.reward_split = reward_split
+                else:
+                    # Not a Scholar? Clear the fields
+                    user.preferred_mode = None
+                    user.reward_split = None
+
                 notifications.set_start_up_message("Settings saved.")
-                update_use = db_actions.update_user(user)
-                local_storage_manager.save_user(update_use)
+                updated_user = db_actions.update_user(user)
+                local_storage_manager.save_user(updated_user)
                 st.rerun()
             else:
-                st.error("Invalid email or discord name unable to perform save")
+                st.error("Invalid Discord name. Unable to perform save.")
 
     with col_cancel:
         if st.button("❌ Cancel", key="cancel_settings_btn"):

@@ -1,8 +1,8 @@
 """initial setup
 
-Revision ID: b3e74960a594
+Revision ID: 119312156e4b
 Revises: 
-Create Date: 2025-04-10 21:45:24.879543
+Create Date: 2025-04-11 20:13:43.998678
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'b3e74960a594'
+revision: str = '119312156e4b'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,7 +25,8 @@ def upgrade() -> None:
     sa.Column('account', sa.String(), nullable=False),
     sa.Column('role', sa.Enum('Undefined', 'Scholar', 'Manager', name='roleenum'), nullable=False),
     sa.Column('discord_reference', sa.String(), nullable=True),
-    sa.Column('email', sa.String(), nullable=True),
+    sa.Column('preferred_mode', sa.Enum('Any', 'Wild', 'Modern', 'WildModern', 'Survival', name='modesenum'), nullable=True),
+    sa.Column('reward_split', sa.Enum('Debatable', 'SPS_0_100', 'SPS_25_75', 'SPS_50_50', 'SPS_75_25', 'SPS_100_0', name='rewardsplitenum'), nullable=True),
     sa.PrimaryKeyConstraint('account')
     )
     # ### end Alembic commands ###

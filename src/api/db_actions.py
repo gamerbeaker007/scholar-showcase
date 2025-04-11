@@ -21,7 +21,8 @@ def create_user(username: str) -> User:
         account=username,
         role=RoleEnum.Undefined,
         discord_reference=None,
-        email=None,
+        preferred_mode=None,
+        reward_split=None,
     )
     db.add(new_user)
     db.commit()
@@ -38,19 +39,15 @@ def update_user(user: User) -> User:
 
 def users_to_df(users) -> pd.DataFrame:
     if users:
-        return pd.DataFrame([{
-            "account": user.account,
-            "role": user.role.value,
-            "discord_reference": user.discord_reference,
-            "email": user.email,
-        } for user in users])
+        return pd.DataFrame([user.to_dict() for user in users])
     else:
         return pd.DataFrame(columns=[
             "account",
             "role",
             "discord_reference",
-            "email"]
-        )
+            "preferred_mode",
+            "reward_split"
+        ])
 
 
 def get_all_managers():

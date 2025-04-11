@@ -1,4 +1,6 @@
-from src.utils.icons import discord_icon_url, email_icon_url
+import pandas as pd
+
+from src.utils.icons import discord_icon_url, sps_icon_url
 
 # CSS Styles for Contact Info Card
 contact_info_styles = """
@@ -15,42 +17,55 @@ contact_info_styles = """
 .contact-item {
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.1rem;
 }
-.contact-item img {
+.contact-label {
+    width: 160px;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+.contact-label img {
     height: 20px;
     margin-right: 8px;
 }
-.contact-email a {
-    color: white;
-    text-decoration: none;
+.contact-value {
+    flex: 1;
 }
 </style>
 """
 
 
-def get_contact_info_card(row):
-    if row["role"] != "Scholar":
+def get_contact_info_card(row: pd.Series):
+    if pd.isna(row["role"]) or row["role"] == 'Undefined':
         return """<div class='contact-card'>
             <div class='contact-item'>No contact info</div>
         </div>"""
 
-    discord_html = "<div></div>"
-    email_html = "<div></div>"
+    discord_html = "<div />"
+    preferred_mode_html = "<div />"
+    reward_split_html = "<div />"
 
     if row.get("discord_reference"):
         discord_html = f"""<div class='contact-item'>
-            <img src='{discord_icon_url}' alt='discord' />
-            <span>{row["discord_reference"]}</span>
+            <div class='contact-label'><img src='{discord_icon_url}' alt='discord' />Discord</div>
+            <div class='contact-value'>{row["discord_reference"]}</div>
         </div>"""
 
-    if row.get("email"):
-        email_html = f"""<div class='contact-item contact-email'>
-            <img src='{email_icon_url}' alt='email' />
-            <a href='mailto:{row["email"]}'>Email</a>
+    if row.get("preferred_mode"):
+        preferred_mode_html = f"""<div class='contact-item'>
+            <div class='contact-label'>⚔️ Preferred modes</div>
+            <div class='contact-value'>{row["preferred_mode"]}</div>
+        </div>"""
+
+    if row.get("reward_split"):
+        reward_split_html = f"""<div class='contact-item'>
+            <div class='contact-label'><img src='{sps_icon_url}' alt='discord' />Reward Split</div>
+            <div class='contact-value'>{row["reward_split"]}</div>
         </div>"""
 
     return f"""{contact_info_styles}<div class='contact-card'>
         {discord_html}
-        {email_html}
+        {preferred_mode_html}
+        {reward_split_html}
     </div>"""
