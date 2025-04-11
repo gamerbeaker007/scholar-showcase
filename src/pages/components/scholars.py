@@ -19,6 +19,7 @@ container_style = """<style>
     }
     </style>"""
 
+
 def get_page():
     st.title("Registered Scholars")
     row_colors = ["#111", "#222"]
@@ -44,4 +45,3 @@ def get_page():
             </div>
         </div>
         """, unsafe_allow_html=True)
-

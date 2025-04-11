@@ -1,7 +1,4 @@
-import streamlit as st
-
 from src.pages.components import managers, scholars
-
 
 
 def get_page():

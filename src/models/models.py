@@ -1,7 +1,7 @@
-from sqlalchemy import Column, String, Enum, Boolean
-from sqlalchemy.ext.declarative import declarative_base
 import enum
 
+from sqlalchemy import Column, String, Enum
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, mapped_column
 
 Base = declarative_base()
