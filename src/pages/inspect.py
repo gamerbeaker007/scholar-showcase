@@ -9,6 +9,8 @@ def get_page():
     query_params = st.query_params.to_dict()
     player = query_params.get("player", [])
 
+    st.title("Inspect specific player")
+
     if not player:
         player = st.text_input("account name")
 

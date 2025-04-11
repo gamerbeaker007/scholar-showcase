@@ -25,12 +25,9 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",  # Date format
 )
 
-st.set_page_config(page_title="Scholar Showcase demo", layout="wide")
+st.set_page_config(page_title="SPL Scholar Showcase", layout="wide")
 nav = get_nav_from_toml('.streamlit/pages.toml')
 pg = st.navigation(nav)
-
-
-st.title("Scholar Showcase demo")
 
 # Add login to sidebar
 login_section()
