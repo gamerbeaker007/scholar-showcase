@@ -44,6 +44,7 @@ def get_contact_info_card(row: pd.Series):
 
     discord_html = "<div />"
     preferred_mode_html = "<div />"
+    preferred_league_html = "<div />"
     reward_split_html = "<div />"
 
     if row.get("discord_reference"):
@@ -58,14 +59,21 @@ def get_contact_info_card(row: pd.Series):
             <div class='contact-value'>{row["preferred_mode"]}</div>
         </div>"""
 
+    if row.get("preferred_league"):
+        preferred_league_html = f"""<div class='contact-item'>
+            <div class='contact-label'>⚔️ Preferred league</div>
+            <div class='contact-value'>{row["preferred_league"]}</div>
+        </div>"""
+
     if row.get("reward_split"):
         reward_split_html = f"""<div class='contact-item'>
-            <div class='contact-label'><img src='{sps_icon_url}' alt='discord' />Reward Split</div>
+            <div class='contact-label'><img src='{sps_icon_url}' alt='SPS' />Reward Split</div>
             <div class='contact-value'>{row["reward_split"]}</div>
         </div>"""
 
     return f"""{contact_info_styles}<div class='contact-card'>
         {discord_html}
         {preferred_mode_html}
+        {preferred_league_html}
         {reward_split_html}
     </div>"""

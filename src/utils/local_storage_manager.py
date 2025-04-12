@@ -1,5 +1,6 @@
 import json
 import base64
+import logging
 from time import sleep
 
 import streamlit as st
@@ -12,6 +13,8 @@ from src.models.models import User
 
 
 secret = st.secrets["cookies"]["password"]
+
+log = logging.getLogger("LocalStorage")
 
 
 def _get_aes_cipher(secret_key: str, salt: bytes):
@@ -62,7 +65,8 @@ def get_user() -> User | None:
     try:
         return User(**json.loads(decrypted))
     except Exception as e:
-        st.error(f"Failed to parse user: {e}")
+        log.error(f"Failed to parse user: {e}")
+        delete_user()
         return None
 
 

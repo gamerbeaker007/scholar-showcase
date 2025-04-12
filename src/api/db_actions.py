@@ -46,6 +46,7 @@ def users_to_df(users) -> pd.DataFrame:
             "role",
             "discord_reference",
             "preferred_mode",
+            "preferred_league",
             "reward_split"
         ])
 

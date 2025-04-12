@@ -20,6 +20,14 @@ class PreferredModesEnum(str, enum.Enum):
     Survival = "Survival"
 
 
+class PreferredLeagueEnum(str, enum.Enum):
+    Any = "Any"
+    Bronze = "Bronze"
+    Silver = "Silver"
+    Gold = "Gold"
+    Diamond = "Diamond+"
+
+
 class RewardSplitEnum(str, enum.Enum):
     Debatable = "Debatable"
     SPS_0_100 = "0/100 SPS"
@@ -36,6 +44,7 @@ class User(Base):
     role: Mapped[RoleEnum] = mapped_column(Enum(RoleEnum), default=RoleEnum.Undefined)
     discord_reference = Column(String, nullable=True)
     preferred_mode: Mapped[PreferredModesEnum] = mapped_column(Enum(PreferredModesEnum), nullable=True)
+    preferred_league: Mapped[PreferredLeagueEnum] = mapped_column(Enum(PreferredLeagueEnum), nullable=True)
     reward_split: Mapped[RewardSplitEnum] = mapped_column(Enum(RewardSplitEnum), nullable=True)
 
     def to_dict(self):
@@ -44,6 +53,7 @@ class User(Base):
             "role": self.role.name if self.role else None,
             "discord_reference": self.discord_reference,
             "preferred_mode": self.preferred_mode.value if self.preferred_mode else None,
+            "preferred_league": self.preferred_league.value if self.preferred_league else None,
             "reward_split": self.reward_split.value if self.reward_split else None,
         }
         return user_dict

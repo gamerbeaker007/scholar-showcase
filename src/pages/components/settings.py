@@ -3,7 +3,7 @@ import re
 import streamlit as st
 
 from src.api import db_actions
-from src.models.models import User, RoleEnum, RewardSplitEnum, PreferredModesEnum
+from src.models.models import User, RoleEnum, RewardSplitEnum, PreferredModesEnum, PreferredLeagueEnum
 from src.utils import notifications, local_storage_manager
 
 
@@ -58,6 +58,14 @@ def show_settings_dialog(user: User):
                 index=current_index
             )
 
+            preferred_league_options = list(PreferredLeagueEnum)
+            current_index = preferred_league_options.index(user.preferred_league) if user.preferred_league else 0
+            preferred_league = st.selectbox(
+                "Preferred League",
+                options=PreferredLeagueEnum,
+                index=current_index
+            )
+
             reward_split_options = list(RewardSplitEnum)
             current_index = reward_split_options.index(user.reward_split) if user.reward_split else 0
             reward_split = st.selectbox(
@@ -87,10 +95,12 @@ def show_settings_dialog(user: User):
                         st.error("Preferred Mode and Reward Split are required for Scholars.")
                         return
                     user.preferred_mode = preferred_mode
+                    user.preferred_league = preferred_league
                     user.reward_split = reward_split
                 else:
                     # Not a Scholar? Clear the fields
                     user.preferred_mode = None
+                    user.preferred_league = None
                     user.reward_split = None
 
                 notifications.set_start_up_message("Settings saved.")

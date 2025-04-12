@@ -58,7 +58,7 @@ def get_battle_info_card(row):
 
     return f"""<div class='battle-card' title='Wins: {row["wins"]}, Losses: {row["losses"]}'>
         <div class='battle-card-content'>
-            <div class='battle-col'>⚔️ {winrate}%</div>
+            <div class='battle-col'>⚔️ {winrate}% (WR)</div>
             <div class='battle-col'>
                 <span>🥇 {counts["first"]}x</span>
                 <span>🥈 {counts["second"]}x</span>

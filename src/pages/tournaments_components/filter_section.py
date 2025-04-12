@@ -7,6 +7,7 @@ filter_players = "filter_players"
 filter_role = "filter_role"
 filter_reward_split = "filter_reward_split"
 filter_preferred_mode = "filter_preferred_mode"
+filter_preferred_league = "filter_preferred_league"
 sorting = "sorting"
 
 
@@ -19,6 +20,8 @@ def apply_filters(df: pd.DataFrame):
         df = df[df.reward_splut.isin(st.session_state[filter_reward_split])]
     if st.session_state.get(filter_preferred_mode):
         df = df[df.preferred_mode.isin(st.session_state[filter_preferred_mode])]
+    if st.session_state.get(filter_preferred_league):
+        df = df[df.preferred_league.isin(st.session_state[filter_preferred_league])]
 
     return df
 
@@ -41,6 +44,7 @@ def get_page(df: pd.DataFrame):
     players_options = df['player'].dropna().sort_values().unique().tolist()
     reward_split_options = df['reward_split'].dropna().sort_values().unique().tolist()
     preferred_mode_options = df['preferred_mode'].dropna().sort_values().unique().tolist()
+    preferred_league_options = df['preferred_league'].dropna().sort_values().unique().tolist()
     sorting_options = ['Win', 'Win Rate', 'Losses', 'Player', 'Battles', 'Tournaments']
 
     st.markdown("### 🎛️ Filters")
@@ -49,22 +53,28 @@ def get_page(df: pd.DataFrame):
         options=players_options,
         key=filter_players,
         default=st.session_state.get(filter_players, []))
-    st.multiselect(
-        "Preferred Modes",
-        options=preferred_mode_options,
-        key=filter_preferred_mode,
-        default=st.session_state.get(filter_preferred_mode, []))
-    st.multiselect(
-        "Reward Split",
-        options=reward_split_options,
-        key=filter_reward_split,
-        default=st.session_state.get(filter_reward_split, []))
-
-    st.checkbox(
-        "Registered Scholars",
-        key=filter_role,
-        value=False,
-    )
+    with st.container(border=True):
+        st.write("Scholar filters")
+        st.multiselect(
+            "Preferred Modes",
+            options=preferred_mode_options,
+            key=filter_preferred_mode,
+            default=st.session_state.get(filter_preferred_mode, []))
+        st.multiselect(
+            "Preferred League",
+            options=preferred_league_options,
+            key=filter_preferred_league,
+            default=st.session_state.get(filter_preferred_league, []))
+        st.multiselect(
+            "Reward Split",
+            options=reward_split_options,
+            key=filter_reward_split,
+            default=st.session_state.get(filter_reward_split, []))
+        st.checkbox(
+            "Registered Scholars",
+            key=filter_role,
+            value=False,
+        )
     st.selectbox(
         "Sorting",
         options=sorting_options,
