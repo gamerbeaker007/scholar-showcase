@@ -1,7 +1,6 @@
 import importlib
 import logging
 import sys
-import time
 
 import streamlit as st
 from st_pages import get_nav_from_toml
@@ -37,24 +36,16 @@ pg = st.navigation(nav)
 dev_mode.show_dev_warning()
 
 # Add login to sidebar
-start = time.time()
 login_section()
-st.info(f"Login Elapsed: {time.time() - start:.2f} seconds")
 
 placeholder = st.empty()
 # Dynamically call the page-specific function based on the selected page
 if pg.title == "Tournaments":
     with placeholder.container():
-        start = time.time()
         tournaments.get_page()
-        st.info(f"Tournaments Elapsed: {time.time() - start:.2f} seconds")
 if pg.title == "Inspect":
     with placeholder.container():
-        start = time.time()
         inspect.get_page()
-        st.info(f"Inspect Elapsed: {time.time() - start:.2f} seconds")
 if pg.title == "Registered":
     with placeholder.container():
-        start = time.time()
         registered.get_page()
-        st.info(f"Registered Elapsed: {time.time() - start:.2f} seconds")

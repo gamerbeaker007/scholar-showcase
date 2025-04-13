@@ -3,7 +3,7 @@ import streamlit as st
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import sessionmaker
 
-from src.models.models import Base, User, RoleEnum
+from src.models.models import User, RoleEnum
 
 db_url = st.secrets["database"]["url"]
 engine = create_engine(db_url)

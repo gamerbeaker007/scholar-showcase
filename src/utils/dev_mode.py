@@ -8,6 +8,7 @@ from alembic.config import Config
 db_url = st.secrets["database"]["url"]
 log = logging.getLogger("DEV Mode")
 
+
 def run_migrations():
     alembic_cfg = Config("alembic.ini")
     os.environ["DATABASE_URL"] = db_url
