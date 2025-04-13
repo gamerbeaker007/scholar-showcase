@@ -10,10 +10,11 @@ engine = create_engine(db_url)
 Session = sessionmaker(bind=engine)
 db = Session()
 
+
 def add_dummy_users():
     add_user(
         "test_manager",
-             RoleEnum.Manager,
+        RoleEnum.Manager,
         None,
         None,
         None,
@@ -21,7 +22,7 @@ def add_dummy_users():
     )
     add_user(
         "test_manager1",
-             RoleEnum.Manager,
+        RoleEnum.Manager,
         "DummyDiscord",
         None,
         None,
@@ -33,21 +34,21 @@ def add_dummy_users():
              PreferredModesEnum.Any,
              PreferredLeagueEnum.Gold,
              RewardSplitEnum.SPS_25_75
-     )
+             )
     add_user("kvm86",
              RoleEnum.Scholar,
              "Dummy Scholar (kvm86)",
              PreferredModesEnum.Any,
              PreferredLeagueEnum.Gold,
              RewardSplitEnum.Negotiable
-     )
+             )
     add_user("jerwin2022",
              RoleEnum.Scholar,
              "Dummy Scholar (jerwin2022)",
              PreferredModesEnum.Any,
              PreferredLeagueEnum.Diamond,
              RewardSplitEnum.SPS_75_25
-     )
+             )
 
 
 def user_exists(name):
@@ -67,4 +68,3 @@ def add_user(name, role, discord, preferred_mode, preferred_league, reward_split
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-
