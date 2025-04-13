@@ -5,6 +5,8 @@ import streamlit as st
 from alembic import command
 from alembic.config import Config
 
+from src.utils import test_data
+
 db_url = st.secrets["database"]["url"]
 log = logging.getLogger("DEV Mode")
 
@@ -27,3 +29,4 @@ def show_dev_warning():
         Feel free to explore here, but for persistent data,
         visit the main page: https://spl-scholar-showcase.streamlit.app
         """)
+        test_data.add_dummy_users()
