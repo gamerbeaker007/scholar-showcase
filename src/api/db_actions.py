@@ -7,7 +7,6 @@ from src.models.models import Base, User, RoleEnum
 
 db_url = st.secrets["database"]["url"]
 engine = create_engine(db_url)
-Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 db = Session()
 

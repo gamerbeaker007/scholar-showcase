@@ -29,7 +29,7 @@ class PreferredLeagueEnum(str, enum.Enum):
 
 
 class RewardSplitEnum(str, enum.Enum):
-    Debatable = "Negotiable"
+    Negotiable = "Negotiable"
     SPS_0_100 = "0/100 SPS"
     SPS_25_75 = "25/75 SPS"
     SPS_50_50 = "50/50 SPS"

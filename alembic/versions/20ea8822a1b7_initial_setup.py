@@ -1,8 +1,8 @@
-"""initial setup
+"""Initial Setup
 
-Revision ID: c712b59f793d
+Revision ID: 20ea8822a1b7
 Revises: 
-Create Date: 2025-04-12 21:12:46.062189
+Create Date: 2025-04-13 14:25:06.392764
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'c712b59f793d'
+revision: str = '20ea8822a1b7'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('discord_reference', sa.String(), nullable=True),
     sa.Column('preferred_mode', sa.Enum('Any', 'Wild', 'Modern', 'WildModern', 'Survival', name='preferredmodesenum'), nullable=True),
     sa.Column('preferred_league', sa.Enum('Any', 'Bronze', 'Silver', 'Gold', 'Diamond', name='preferredleagueenum'), nullable=True),
-    sa.Column('reward_split', sa.Enum('Debatable', 'SPS_0_100', 'SPS_25_75', 'SPS_50_50', 'SPS_75_25', 'SPS_100_0', name='rewardsplitenum'), nullable=True),
+    sa.Column('reward_split', sa.Enum('Negotiable', 'SPS_0_100', 'SPS_25_75', 'SPS_50_50', 'SPS_75_25', 'SPS_100_0', name='rewardsplitenum'), nullable=True),
     sa.PrimaryKeyConstraint('account')
     )
     # ### end Alembic commands ###
