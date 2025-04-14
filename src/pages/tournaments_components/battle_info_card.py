@@ -13,7 +13,6 @@ battle_info_styles = """
     padding-left: 1rem;
     background: url(https://img.icons8.com/ios-filled/100/crossed-swords.png) no-repeat left center;
     background-size: 40px;
-    color: white;
     font-size: 16px;
 }
 .battle-card-content {

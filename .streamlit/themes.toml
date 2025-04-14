@@ -1,8 +1,8 @@
-[custom]
-primaryColor = "#3A8F81"
-backgroundColor = "#DFCEA2"
-secondaryBackgroundColor = "#925B15"
-textColor = "#2D250C"
+[scholar]
+primaryColor = "#bc6c25"
+backgroundColor = "#fefae0"
+secondaryBackgroundColor = "#dda15e"
+textColor = "#283618"
 font = "serif"
 [dark]
 primaryColor="#FF4B4B"

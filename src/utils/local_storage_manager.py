@@ -11,6 +11,7 @@ from streamlit_local_storage import LocalStorage
 
 from src.models.models import User
 
+WAIT_AFTER_STORE = 0.8
 
 secret = st.secrets["cookies"]["password"]
 
@@ -52,7 +53,7 @@ def save_user(user: User):
     encrypted = encrypt_data(json.dumps(user.to_dict()), secret)
     storage.setItem("user", encrypted)
     # Give system time before rerun
-    sleep(1)
+    sleep(WAIT_AFTER_STORE)
 
 
 def get_user() -> User | None:
@@ -74,4 +75,16 @@ def delete_user():
     storage = get_storage()
     storage.deleteItem("user")
     # Give system time before rerun
-    sleep(1)
+    sleep(WAIT_AFTER_STORE)
+
+
+def get_stored_theme():
+    storage = get_storage()
+    theme = storage.getItem("theme")
+    return theme
+
+
+def store_theme(theme_name):
+    storage = get_storage()
+    storage.setItem("theme", theme_name)
+    sleep(WAIT_AFTER_STORE)

@@ -8,6 +8,7 @@ from src.pages.tournaments_components import filter_section
 from src.pages.tournaments_components.battle_info_card import get_battle_info_card, battle_info_styles
 from src.pages.tournaments_components.contact_info_card import get_contact_info_card, contact_info_styles
 from src.pages.tournaments_components.player_info_card import get_player_info_card, player_info_styles
+from src.utils.themes import get_back_colors
 
 tournament_names = [
     'Scarred Hand Novice Cup',
@@ -57,7 +58,7 @@ def get_aggregated_players(tournament_ids: list[str]):
 
 
 def add_player_overview(df, tournament_name):
-    row_colors = ["#111", "#222"]
+    row_colors = get_back_colors()
 
     st.markdown(f"## Participants of tournament {tournament_name}")
 

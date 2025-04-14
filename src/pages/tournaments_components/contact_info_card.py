@@ -12,7 +12,6 @@ contact_info_styles = """
     justify-content: center;
     margin-left: 1rem;
     padding-left: 1rem;
-    color: white;
 }
 .contact-item {
     display: flex;

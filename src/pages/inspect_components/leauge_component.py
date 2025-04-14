@@ -11,7 +11,6 @@ league_info_style = """<style>
             border-radius: 16px;
             padding: 10px;
             margin: 10px 0;
-            color: white;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             overflow: hidden;
         }
