@@ -1,4 +1,5 @@
 from src.utils.icons import player_icon_url
+from src.utils.themes import get_text_color
 
 player_info_styles = """
 <style>
@@ -39,7 +40,7 @@ player_info_styles = """
 }
 
 .player-card span {
-    color: white;
+    color: """ + get_text_color() + """;
     font-weight: bold;
     font-size: 18px;
     text-decoration: none !important;
