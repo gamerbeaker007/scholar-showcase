@@ -114,3 +114,16 @@ def get_leaderboard_with_player(player, format_type):
     if result and len(result) > 1:
         return pd.DataFrame(result, index=[0])
     return pd.DataFrame()
+
+
+def get_player_profile(player):
+    params = {
+        'name': player,
+        'season_details': 'true',
+        'format': 'all',
+    }
+
+    result = fetch_api_data(f'{API_URLS['base']}players/details', params=params)
+    if result:
+        return result
+    return None

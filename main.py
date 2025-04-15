@@ -7,6 +7,7 @@ from st_pages import get_nav_from_toml
 
 from src.pages import tournaments, inspect, registered
 from src.pages.components.login_section import login_section
+from src.pages.components.scholar_sidebar import add_scholar_img
 from src.utils import dev_mode, themes
 
 
@@ -39,6 +40,8 @@ dev_mode.show_dev_warning()
 login_section()
 # Add themes to sidebar
 themes.get_section()
+# Add scholar imate to sidebar
+add_scholar_img()
 
 placeholder = st.empty()
 # Dynamically call the page-specific function based on the selected page

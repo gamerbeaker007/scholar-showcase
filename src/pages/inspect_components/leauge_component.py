@@ -14,10 +14,13 @@ league_info_style = """<style>
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             overflow: hidden;
         }
-        .league-card .overlay {
-            background-color: rgba(0, 0, 0, 0.55); /* semi-transparent dark layer */
+        .league-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.1); /* Adjust transparency here */
             border-radius: 16px;
-            padding: 20px;
+            z-index: 0;
         }
         .league-card h3 {
             margin-top: 0;
