@@ -14,6 +14,8 @@ log = logging.getLogger("DEV Mode")
 def run_migrations():
     alembic_cfg = Config("alembic.ini")
     os.environ["DATABASE_URL"] = db_url
+    os.environ["DISABLE_ALEMBIC_LOGGING"] = "1"
+
     log.info("Running Alembic ....")
     command.upgrade(alembic_cfg, "head")
 

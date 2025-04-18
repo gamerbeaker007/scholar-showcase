@@ -10,13 +10,10 @@ from src.pages.tournaments_components.contact_info_card import get_contact_info_
 from src.pages.tournaments_components.player_info_card import get_player_info_card, player_info_styles
 from src.utils.themes import get_back_colors
 
-tournament_names = [
-    'Scarred Hand Novice Cup',
-    'Scarred Hand Bronze Cup',
-    'Scarred Hand Silver Cup',
-    'Scarred Hand Gold Cup',
-    'Scarred Hand Diamond Cup'
-]
+if 'settings' in st.secrets and "tournaments" in st.secrets["settings"]:
+    tournament_names = st.secrets["settings"]["tournaments"]
+else:
+    tournament_names = None
 
 log = logging.getLogger("Tournaments")
 

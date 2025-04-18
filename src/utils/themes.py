@@ -22,8 +22,16 @@ def load_themes():
 
 
 def update_theme(theme_dict):
+    valid_theme_keys = {
+        "primaryColor",
+        "backgroundColor",
+        "secondaryBackgroundColor",
+        "textColor",
+        "font",
+    }
     for key, value in theme_dict.items():
-        st.config.set_option(f"theme.{key}", value)  # type: ignore # noqa: SLF001
+        if key in valid_theme_keys:
+            st.config.set_option(f"theme.{key}", value)  # type: ignore # noqa: SLF001
 
 
 def get_theme_value(key, default=None):
