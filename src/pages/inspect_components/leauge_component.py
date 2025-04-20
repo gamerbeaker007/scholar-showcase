@@ -43,6 +43,10 @@ def get_league_icon(league, format_type):
 
 
 def league_info(league_df, format_type):
+    required_columns = {"rating", "league", "wins", "battles"}
+    if league_df.empty or not required_columns.issubset(league_df.columns):
+        return  # Skip the function safely if required data is missing
+
     rating = league_df.rating.iloc[0]
     league = league_df.league.iloc[0]
     wins = league_df.wins.iloc[0]
