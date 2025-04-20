@@ -21,7 +21,7 @@ def add_tournaments_section(df, player):
 def add_tournaments_cards(df):
     if df.empty:
         st.warning(
-            "❌ No qualified tournaments for player qualified tournaments are:\n\n" +
+            "❌ No qualified tournaments for player found.\n\n Qualified tournaments are:\n\n" +
             "\n".join(f"- {t}" for t in get_qualified_tournaments())
         )
     if not df.empty:
