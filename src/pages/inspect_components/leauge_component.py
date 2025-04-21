@@ -7,33 +7,46 @@ from src.utils.static_enums import LEAGUE_MAPPING
 league_info_style = """<style>
         .league-card {
             position: relative;
-            background-size: cover;
-            background-position: center;
             border-radius: 16px;
             padding: 10px;
             margin: 10px 0;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            background-size: cover;
+            background-position: center;
             overflow: hidden;
+            height: 220px;
         }
-        .league-card::before {
-            content: "";
+
+        .league-card .overlay {
             position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.1); /* Adjust transparency here */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             border-radius: 16px;
-            z-index: 0;
         }
-        .league-card h3 {
-            margin-top: 0;
+
+        .league-card h2 {
+            margin-top: 4px;
             font-size: 24px;
+            color: #fefae0;
         }
+
         .league-card h3 {
-            align: center;
-            font-size: 24px;
+            margin: 2px;
+            font-size: 20px;
+            color: #fefae0;
         }
+
         .league-card p {
-            margin: 6px 0;
+            margin: 1px;
             font-size: 16px;
+            color: #fefae0;
         }
         </style>"""
 
