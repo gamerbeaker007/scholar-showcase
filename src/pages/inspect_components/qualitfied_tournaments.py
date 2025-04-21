@@ -14,7 +14,7 @@ def add_tournaments_section(df, player):
     filtered_tournaments = df[df['name'].isin(get_qualified_tournaments())]
 
     all_tournaments_played_info = get_played_tournaments(filtered_tournaments, player)
-    st.title(f"👤 {player} entered qualified '{all_tournaments_played_info.index.size}' tournaments")
+    st.title(f"👤 {player} Entered '{all_tournaments_played_info.index.size}' Qualified Tournaments")
     add_tournaments_cards(all_tournaments_played_info)
 
 
