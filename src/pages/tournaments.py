@@ -107,8 +107,5 @@ def get_page():
 
         st.write(f"Found tournaments: {matching_tournaments.index.size}")
 
-        content_col, filters = st.columns([3, 1], gap='large')
-        with filters:
-            merged_df = filter_section.get_page(merged_df)
-        with content_col:
-            add_player_overview(merged_df, "All Tournaments" if use_all else tournament_name)
+        merged_df = filter_section.get_page(merged_df)
+        add_player_overview(merged_df, "All Tournaments" if use_all else tournament_name)

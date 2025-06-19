@@ -47,39 +47,40 @@ def get_page(df: pd.DataFrame):
     preferred_league_options = df['preferred_league'].dropna().sort_values().unique().tolist()
     sorting_options = ['Win', 'Win Rate', 'Losses', 'Player', 'Battles', 'Tournaments']
 
-    st.markdown("### 🎛️ Filters")
-    st.multiselect(
-        "Players",
-        options=players_options,
-        key=filter_players,
-        default=st.session_state.get(filter_players, []))
-    with st.container(border=True):
-        st.write("Scholar filters")
+    with st.sidebar:
+        st.markdown("### 🎛️ Filters")
         st.multiselect(
-            "Preferred Modes",
-            options=preferred_mode_options,
-            key=filter_preferred_mode,
-            default=st.session_state.get(filter_preferred_mode, []))
-        st.multiselect(
-            "Preferred League",
-            options=preferred_league_options,
-            key=filter_preferred_league,
-            default=st.session_state.get(filter_preferred_league, []))
-        st.multiselect(
-            "Reward Split",
-            options=reward_split_options,
-            key=filter_reward_split,
-            default=st.session_state.get(filter_reward_split, []))
-        st.checkbox(
-            "Registered Scholars",
-            key=filter_role,
-            value=False,
+            "Players",
+            options=players_options,
+            key=filter_players,
+            default=st.session_state.get(filter_players, []))
+        with st.container(border=True):
+            st.write("Scholar filters")
+            st.multiselect(
+                "Preferred Modes",
+                options=preferred_mode_options,
+                key=filter_preferred_mode,
+                default=st.session_state.get(filter_preferred_mode, []))
+            st.multiselect(
+                "Preferred League",
+                options=preferred_league_options,
+                key=filter_preferred_league,
+                default=st.session_state.get(filter_preferred_league, []))
+            st.multiselect(
+                "Reward Split",
+                options=reward_split_options,
+                key=filter_reward_split,
+                default=st.session_state.get(filter_reward_split, []))
+            st.checkbox(
+                "Registered Scholars",
+                key=filter_role,
+                value=True,
+            )
+        st.selectbox(
+            "Sorting",
+            options=sorting_options,
+            key=sorting,
         )
-    st.selectbox(
-        "Sorting",
-        options=sorting_options,
-        key=sorting,
-    )
 
     df = apply_filters(filtered_df)
     return apply_sorting(df)

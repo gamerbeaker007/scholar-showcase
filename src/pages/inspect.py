@@ -29,6 +29,9 @@ def get_page():
             if not result_dict:
                 st.warning("Player not found, enter valid splinterlands account")
                 return
+
+            add_scholar_card(player, details=True)
+
             if result_dict:
                 add_league_cards(result_dict)
 
@@ -37,5 +40,3 @@ def get_page():
             with st.spinner("Loading finished tournaments"):
                 df = spl.get_complete_tournaments()
                 add_tournaments_section(df, player)
-
-            add_scholar_card(player)

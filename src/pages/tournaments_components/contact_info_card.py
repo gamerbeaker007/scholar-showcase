@@ -19,7 +19,7 @@ contact_info_styles = """
     margin-bottom: 0.1rem;
 }
 .contact-label {
-    width: 160px;
+    width: 225px;
     display: flex;
     align-items: center;
     font-weight: bold;
@@ -66,13 +66,20 @@ def get_contact_info_card(row: pd.Series):
 
     if row.get("reward_split"):
         reward_split_html = f"""<div class='contact-item'>
-            <div class='contact-label'><img src='{sps_icon_url}' alt='SPS' />Reward Split</div>
+            <div class='contact-label'><img src='{sps_icon_url}' alt='SPS' />Reward split</div>
             <div class='contact-value'>{row["reward_split"]}</div>
         </div>"""
 
-    return f"""{contact_info_styles}<div class='contact-card'>
+    hire_status = "✅ Yes" if row["available_for_hire"] else "❌ No"
+    available_for_hire = f"""<div class='contact-item'>
+        <div class='contact-label'><img src='{sps_icon_url}' alt='SPS' />Available for Scholarship</div>
+        <div class='contact-value'>{hire_status}</div>
+    </div>"""
+
+    return f"""<div class='contact-card'>
         {discord_html}
         {preferred_mode_html}
         {preferred_league_html}
         {reward_split_html}
+        {available_for_hire}
     </div>"""

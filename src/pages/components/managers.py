@@ -13,11 +13,6 @@ container_style = """<style>
         flex-wrap: wrap;
     }
 
-    @media screen and (max-width: 768px) {
-        .flex-container {
-            flex-direction: column;
-        }
-    }
     </style>"""
 
 

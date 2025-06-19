@@ -30,14 +30,14 @@ def login_section():
     with st.sidebar:
         user = login.get_user()
 
-        # Show welcome + login/logout/status
         if user:
             st.markdown(f"**Logged in as:** `{user.account}`")
 
-            # Settings + Logout buttons in horizontal layout
             col1, col2 = st.columns([1, 1], gap="small")
             with col1:
                 if st.button("⚙️ Settings", key="settings_btn", help="Settings"):
+                    for key in ["scholar_accounts", "alt_accounts"]:
+                        st.session_state.pop(key, None)
                     settings.show_settings_dialog(user)
             with col2:
                 if st.button("🚪 Logout", key="logout_btn", help="Logout"):

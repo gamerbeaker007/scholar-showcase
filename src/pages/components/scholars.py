@@ -2,6 +2,7 @@ import streamlit as st
 
 from src.api import db_actions
 from src.api.db_actions import get_scholar
+from src.pages.tournaments_components.additional_contact_info_card import get_additional_contact_info_card
 from src.pages.tournaments_components.contact_info_card import get_contact_info_card
 from src.pages.tournaments_components.player_info_card import get_player_info_card
 from src.utils.themes import get_back_colors
@@ -29,7 +30,7 @@ def get_page():
         """, unsafe_allow_html=True)
 
 
-def add_scholar_card(player):
+def add_scholar_card(player, details=False):
     st.subheader("📝 Scholar Contact Info")
     bg_color = get_back_colors()
     scholar = get_scholar(player)
@@ -46,5 +47,16 @@ def add_scholar_card(player):
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
+
+        if details:
+            additional_contact_info = get_additional_contact_info_card(row)
+            st.markdown(f"""
+                    <div>
+                    <strong>Addition Information</strong>
+                        <div class='flex-container'>
+                            {additional_contact_info}
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
     else:
         st.warning("⚠️ Not registered as scholar")

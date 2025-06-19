@@ -1,7 +1,8 @@
-from sqlalchemy import Column, String, Enum
+import enum
+
+from sqlalchemy import Column, String, Enum, Boolean, JSON
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Mapped, mapped_column
-import enum
 
 Base = declarative_base()
 
@@ -47,13 +48,19 @@ class User(Base):
     preferred_league: Mapped[PreferredLeagueEnum] = mapped_column(Enum(PreferredLeagueEnum), nullable=True)
     reward_split: Mapped[RewardSplitEnum] = mapped_column(Enum(RewardSplitEnum), nullable=True)
 
+    alt_accounts: Mapped[list[str]] = mapped_column(JSON, default=list)
+    scholar_accounts: Mapped[list[str]] = mapped_column(JSON, default=list)
+    available_for_hire: Mapped[bool] = mapped_column(Boolean, default=True)
+
     def to_dict(self):
-        user_dict = {
+        return {
             "account": self.account,
             "role": self.role.name if self.role else None,
             "discord_reference": self.discord_reference,
             "preferred_mode": self.preferred_mode.value if self.preferred_mode else None,
             "preferred_league": self.preferred_league.value if self.preferred_league else None,
             "reward_split": self.reward_split.value if self.reward_split else None,
+            "alt_accounts": self.alt_accounts or [],
+            "scholar_accounts": self.scholar_accounts or [],
+            "available_for_hire": self.available_for_hire,
         }
-        return user_dict
