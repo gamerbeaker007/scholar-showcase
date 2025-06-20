@@ -107,12 +107,17 @@ def get_page():
         df['start_date'] = pd.to_datetime(df['start_date'])
         start = df['start_date'].min().strftime('%Y-%m-%d')
         end = df['start_date'].max().strftime('%Y-%m-%d')
+        total_text = (
+            f'<span style="color:#2E86AB; font-weight:bold;">{df.index.size} tournaments</span>'
+        )
+        period_text = f"<b>{start}</b> and <b>{end}</b>"
+        qualified_text = (
+            f'<span style="color:#27AE60; font-weight:bold;">{matching_tournaments.index.size} qualified</span>'
+        )
         st.markdown(
             f"""
-            ##### 🏆 Found <span style="color:#2E86AB; font-weight:bold;">{df.index.size} tournaments</span>
-            between <b>{start}</b> and <b>{end}</b>
-            🎓 <span style="color:#27AE60; font-weight:bold;">{matching_tournaments.index.size} qualified</span>
-            for the <b>scholarship model</b>.
+            ##### 🏆 Found {total_text} between {period_text}
+            🎓 {qualified_text} for the <b>scholarship model</b>.
             """,
             unsafe_allow_html=True
         )
