@@ -22,6 +22,23 @@ def get_page():
 
     df = db_actions.get_all_managers()
 
+    if df.empty:
+        st.markdown(
+            """
+            <div style="display: flex; center; margin-top: 1em;">
+                <div style="background-color: #d0e7ff; padding: 1.5em;
+                 border-radius: 8px; max-width: 600px; color: #003366;">
+                    <strong>ℹ️ Info:</strong><br><br>
+                    There are currently no managers available who have chosen to share their details.
+                    If a manager is interested, they will reach out to the scholar directly.
+                    <br><br>
+                    Once managers become available for contact, they will be listed on this page.
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
     for idx, (_, row) in enumerate(df.iterrows()):
         bg_color = row_colors[idx % 2]
 

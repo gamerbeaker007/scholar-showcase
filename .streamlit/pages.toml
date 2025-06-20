@@ -11,5 +11,5 @@ icon = ':coin:'
 
 [[pages]]
 path = 'src/pages/registered.py'
-name = 'Registered'
+name = 'Registered Managers'
 icon = ':coin:'

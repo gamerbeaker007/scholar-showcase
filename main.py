@@ -65,6 +65,6 @@ if pg.title == "Tournaments":
 if pg.title == "Inspect":
     with placeholder.container():
         inspect.get_page()
-if pg.title == "Registered":
+if pg.title == "Registered Managers":
     with placeholder.container():
         registered.get_page()

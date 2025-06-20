@@ -1,6 +1,5 @@
-from src.pages.components import managers, scholars
+from src.pages.components import managers
 
 
 def get_page():
     managers.get_page()
-    scholars.get_page()

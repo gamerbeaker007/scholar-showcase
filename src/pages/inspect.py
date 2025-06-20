@@ -30,7 +30,7 @@ def get_page():
                 st.warning("Player not found, enter valid splinterlands account")
                 return
 
-            add_scholar_card(player, details=True)
+            add_scholar_card(player)
 
             if result_dict:
                 add_league_cards(result_dict)
