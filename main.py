@@ -9,6 +9,7 @@ from src.pages import tournaments, inspect, registered
 from src.pages.components.login_section import login_section
 from src.pages.components.managers import container_style
 from src.pages.components.scholar_sidebar import add_scholar_img
+from src.pages.tournaments_components.additional_contact_info_card import additional_contact_info_styles
 from src.pages.tournaments_components.battle_info_card import battle_info_styles
 from src.pages.tournaments_components.contact_info_card import contact_info_styles
 from src.pages.tournaments_components.player_info_card import player_info_styles
@@ -52,7 +53,9 @@ add_scholar_img()
 st.markdown(f'{container_style}'
             f'{player_info_styles}'
             f'{battle_info_styles}'
-            f'{contact_info_styles}', unsafe_allow_html=True)
+            f'{contact_info_styles}'
+            f'{additional_contact_info_styles}'
+            , unsafe_allow_html=True)
 
 placeholder = st.empty()
 # Dynamically call the page-specific function based on the selected page
@@ -62,6 +65,6 @@ if pg.title == "Tournaments":
 if pg.title == "Inspect":
     with placeholder.container():
         inspect.get_page()
-if pg.title == "Registered":
+if pg.title == "Registered Managers":
     with placeholder.container():
         registered.get_page()

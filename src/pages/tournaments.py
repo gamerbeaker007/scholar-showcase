@@ -83,7 +83,6 @@ def get_page():
 
     qualified_names = get_qualified_tournaments()
     tournament_name = None
-
     if not use_all:
         tournament_name = st.selectbox("Select tournament:", options=qualified_names)
 
@@ -105,10 +104,23 @@ def get_page():
         grouped = get_aggregated_players(tournament_ids)
         merged_df = merge_data_with_scholars(grouped)
 
-        st.write(f"Found tournaments: {matching_tournaments.index.size}")
+        df['start_date'] = pd.to_datetime(df['start_date'])
+        start = df['start_date'].min().strftime('%Y-%m-%d')
+        end = df['start_date'].max().strftime('%Y-%m-%d')
+        total_text = (
+            f'<span style="color:#2E86AB; font-weight:bold;">{df.index.size} tournaments</span>'
+        )
+        period_text = f"<b>{start}</b> and <b>{end}</b>"
+        qualified_text = (
+            f'<span style="color:#27AE60; font-weight:bold;">{matching_tournaments.index.size} qualified</span>'
+        )
+        st.markdown(
+            f"""
+            ##### 🏆 Found {total_text} between {period_text}
+            🎓 {qualified_text} for the <b>scholarship model</b>.
+            """,
+            unsafe_allow_html=True
+        )
 
-        content_col, filters = st.columns([3, 1], gap='large')
-        with filters:
-            merged_df = filter_section.get_page(merged_df)
-        with content_col:
-            add_player_overview(merged_df, "All Tournaments" if use_all else tournament_name)
+        merged_df = filter_section.get_page(merged_df)
+        add_player_overview(merged_df, "All Tournaments" if use_all else tournament_name)

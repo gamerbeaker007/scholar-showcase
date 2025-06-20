@@ -40,7 +40,6 @@ player_info_styles = """
 }
 
 .player-card span {
-    color: """ + get_text_color() + """;
     font-weight: bold;
     font-size: 18px;
     text-decoration: none !important;
@@ -56,7 +55,7 @@ def get_player_info_card(row, link=True):
         account = row['account']
 
     img_html = f"<img src='{player_icon_url}' alt='player icon' />"
-    name_html = f"<span>{account}</span>"
+    name_html = f"""<span style="color: {get_text_color()};">{account}</span>"""
 
     if link:
         content_html = f"""<a href='inspect?player={account}' target='_self' class='player-card-link'>
