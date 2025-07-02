@@ -13,3 +13,5 @@ toml~=0.10.2
 pycryptodome~=3.22.0
 streamlit_local_storage~=0.0.25
 streamlit-extras~=0.6.0
+
+flake8
