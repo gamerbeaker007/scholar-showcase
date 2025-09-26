@@ -88,7 +88,9 @@ def get_page():
 
     with st.spinner("Loading data..."):
         df = spl.get_complete_tournaments()
-
+        if df.empty:
+            st.warning('❌ No tournaments found. ❌')
+            return
         if use_all:
             matching_tournaments = df[df['name'].isin(qualified_names)]
         elif tournament_name:

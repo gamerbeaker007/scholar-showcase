@@ -33,7 +33,7 @@ def configure_http_session() -> requests.Session:
     session = requests.Session()
     session.mount("https://", adapter)
     session.headers.update({
-        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Accept-Encoding": "gzip, deflate",
         "User-Agent": "BeeBalanced/1.0"
     })
     return session
@@ -90,9 +90,13 @@ def get_nested_value(response_dict: dict, key_path: str) -> Any:
 @st.cache_data(ttl="1h")
 def get_complete_tournaments():
     log.info("Get SPL tournaments")
-    result = fetch_api_data(f'{API_URLS['base']}tournaments/completed', data_key='data')
-    if result:
-        return pd.DataFrame(result)
+    data = fetch_api_data(f'{API_URLS['base']}tournaments/completed', data_key='data')
+    if data is None:
+        return pd.DataFrame()
+    if isinstance(data, list):
+        return pd.DataFrame(data)
+    if isinstance(data, dict):
+        return pd.DataFrame([data])
     return pd.DataFrame()
 
 
